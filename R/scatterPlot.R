@@ -311,9 +311,14 @@
 ##' scatterPlot(mydata, x = "nox", y = "no2", z = "o3", method = "level",
 ##' x.inc = 10, y.inc = 2, smooth = TRUE)
 ##' }
+##' breakpoints = c(0, 10, 25, 50, 75, 100),
+##' frequencylabels = c("0 to 10", "10 to 25", "25 to 50", "50 to 75", "75 to 100"),
 ##'
 ##'
+
 scatterPlot <- function(mydata, x = "nox", y = "no2", z = NA, method = "scatter",
+			breakpoints = c(0, 10, 25, 50, 75, 100),
+			frequencylabels = c("0 to 10", "10 to 25", "25 to 50", "50 to 75", "75 to 100"),
                         group = NA, avg.time = "default", data.thresh = 0,
                         statistic = "mean", percentile = NA,
                         type = "default", smooth = FALSE, spline = FALSE,
@@ -1271,8 +1276,8 @@ scatterPlot <- function(mydata, x = "nox", y = "no2", z = NA, method = "scatter"
     if (trajStat %in% c("frequency", "difference") && !smooth) {
       
       if (trajStat == "frequency") {
-        breaks <- c(0, 1, 5, 10, 25, 100)
-        labels <- c("0 to 1", "1 to 5", "5 to 10", "10 to 25", "25 to 100")
+        breaks <- breakpoints
+        labels <- frequencylabels
       }
       
       if (trajStat == "difference") {

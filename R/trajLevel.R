@@ -226,7 +226,7 @@
 ##' }
 trajLevel <- function(mydata, lon = "lon", lat = "lat",
                       pollutant = "height", type = "default", smooth = FALSE,
-                      statistic = "frequency", percentile = 90,
+                      statistic = "frequency", percentile = 90, percentile2 = 100,
                       map = TRUE, lon.inc = 1.0, lat.inc = 1.0, min.bin = 1,
                       map.fill = TRUE, map.res = "default", map.cols = "grey40",
                       map.alpha = 0.3, projection = "lambert",
@@ -385,12 +385,12 @@ trajLevel <- function(mydata, lon = "lon", lat = "lat",
 
         ## high percentile
         Q90 <- quantile(mydata[[pollutant]], probs = percentile / 100, na.rm = TRUE)
-
+	Q100 <- quantile(mydata[[pollutant]], probs = percentile2 / 100, na.rm = TRUE)
         ## calculate the proportion of points in cell with value > Q90
         mydata <- group_by_(mydata, "xgrid", "ygrid", type) %>%
           summarise_(date = interp(~ head(date, 1)),
                      N = interp(~ n()),
-                     count = interp(~ length(which(var > Q90)) / N, var = as.name(pollutant)))
+                     count = interp(~ length(which(var > Q90 & var< Q100)) / N, var = as.name(pollutant)))
        
         mydata[[pollutant]] <- mydata$count
         
